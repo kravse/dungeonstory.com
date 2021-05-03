@@ -6,8 +6,10 @@
       <p class="prompt">
         {{story}}
       </p>
-      <p v-if="loading" class="loading">|</p>
-      <p class="instructions" v-if="instructions">Enter some line-separated options to complete this prompt (min 3):</p>
+      <p class="instructions">
+        <span v-if="loading" class="loading">|</span>
+        <span v-else :style="{'opacity': instructions ? '1': '0'}">Enter some line-separated options to complete this prompt (min 3):</span>
+      </p>
     </div>
     <form>
       <textarea ref="text" v-model="input" type="text"/>
