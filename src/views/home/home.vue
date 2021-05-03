@@ -2,6 +2,7 @@
   <div class="home">
     <div class="story">
       <h1>Adventure Writer</h1>
+      <h4>Are choose your own adventures too hard for you? Let Adventure Writer make the choices for you!</h4>
       <p class="prompt">
         {{story}}
       </p>
