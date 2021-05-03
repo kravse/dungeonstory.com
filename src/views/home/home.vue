@@ -1,11 +1,14 @@
 <template>
   <div class="home">
     <div class="story">
-      <p>{{story}}</p>
-      <p class="instructions" v-if="instructions">{{instructions}}</p>
+      <h1>Adventure Writer</h1>
+      <p class="prompt">
+        {{story}}
+      </p>
+      <p class="instructions" v-if="instructions">Enter some line-separated options to complete this prompt (min 3):</p>
     </div>
     <form>
-      <textarea v-model="input" type="text"/>
+      <textarea ref="text" v-model="input" type="text"/>
       <button @click.prevent="submit()" submit="button">Next</button>
     </form>
   </div>
@@ -21,34 +24,63 @@ export default Vue.extend({
   data() {
     return {
       input: '',
-      story: ''
+      story: '',
+      instructions: true,
+      prompt: '',
+      generatedOnce: false
     }
   },
   created: async function () {
-    this.story = jsTypeText.start({
-      text: prompts[0],
-      speed: 45,
-      cursor: false,
-      cursorSpeed: 350,
-      cursorStyle: "vertical"
-    }, (result) => {
-      this.story = result
-    });
-  },
-  computed: {
-    instructions: function () {
-      return this.story === prompts[0] ? 'Enter three options to complete this prompt (separated by line).' : ''
-    }
+    this.prompt = prompts[Math.floor(Math.random() * prompts.length)]
+    this.typeText('story', this.prompt, '')
+    setTimeout(() => {
+      this.$refs.text.focus()
+    }, 50)
   },
   methods: {
+    typeText: function (updateValue, prompt, seed) {
+      if (seed) seed+= ' '
+      jsTypeText.start({
+        text: prompt,
+        speed: 45,
+        cursor: false,
+        cursorSpeed: 350,
+        cursorStyle: "vertical"
+      }, (result) => {
+        this[updateValue] = seed + result
+      });
+    },
+    writeMore: function (seed) {
+      this.$http.post('/.netlify/functions/generate',{
+        "prompt": seed,
+        "max_tokens": 40,
+        "temperature": 1,
+        "k": 5,
+        "p": 1
+      }).then(response => {
+        // this.typeText('longStory', response.data.text)
+        this.typeText('story', response.data.text, this.story)
+        this.input = ''
+        this.instructions = true
+        this.$refs.input.focus()
+      })
+    },
     submit: function () {
+      this.instructions = false
+      let text = this.input.split('\n')
+      let prompt = this.prompt
+      if (this.prompt.indexOf('.')) {
+        prompt = this.story.slice(this.story.lastIndexOf('.'), this.story.length)
+      }
       this.$http.post('/.netlify/functions/best', {
-        query: prompts[0].replace('{}', ''),
-        options: this.input.split("\n"),
+        query: prompt,
+        options: text,
         mode: "APPEND_OPTION"
       }).then(response => {
-        console.log(response, response.data, response.data.text)
-        // this.employeeModel[answer] = response.data.text
+        let results = response.data.likelihoods
+        let winner = text[results.indexOf(Math.max(...results))]
+        this.typeText('story', winner, this.story)
+        this.writeMore(`${this.prompt} ${winner}`)
       })
     }
   }
