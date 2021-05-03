@@ -15,6 +15,9 @@
       <textarea ref="text" v-model="input" type="text"/>
       <button :disabled="loading || prevent" @click.prevent="submit()" submit="button">Write!</button>
     </form>
+    <div class="creds">
+      <p>A website by <a href="https://twitter.com/kravse">kravse</a></p>
+    </div>
   </div>
 </template>
 
