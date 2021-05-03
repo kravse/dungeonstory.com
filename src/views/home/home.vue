@@ -61,7 +61,7 @@ export default Vue.extend({
         cursorSpeed: 350,
         cursorStyle: "vertical"
       }, (result) => {
-        this.updated = result
+        this.updated = ` ${result}`
         if (result === prompt) {
           this.story = `${seed} ${prompt}`
           this.updated = ''
