@@ -6,6 +6,7 @@
       <p class="prompt">
         {{story}}
       </p>
+      <p v-if="loading" class="loading">|</p>
       <p class="instructions" v-if="instructions">Enter some line-separated options to complete this prompt (min 3):</p>
     </div>
     <form>
@@ -28,7 +29,8 @@ export default Vue.extend({
       story: '',
       instructions: true,
       prompt: '',
-      generatedOnce: false
+      generatedOnce: false,
+      loading: false
     }
   },
   created: async function () {
@@ -52,6 +54,7 @@ export default Vue.extend({
       });
     },
     writeMore: function (seed) {
+      this.loading = true
       this.$http.post('/.netlify/functions/generate',{
         "prompt": seed,
         "max_tokens": 40,
@@ -59,11 +62,12 @@ export default Vue.extend({
         "k": 5,
         "p": 1
       }).then(response => {
-        // this.typeText('longStory', response.data.text)
+        this.loading = false
         this.typeText('story', response.data.text, this.story)
         this.input = ''
         this.instructions = true
         this.$refs.input.focus()
+        this.$refs.text.focus()
       })
     },
     submit: function () {
