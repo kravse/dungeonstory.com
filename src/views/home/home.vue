@@ -44,7 +44,7 @@ export default Vue.extend({
     submit: function () {
       this.$http.post('/.netlify/functions/best', {
         query: prompts[0].replace('{}', ''),
-        options = this.input.split("\n"),
+        options: this.input.split("\n"),
         mode: "APPEND_OPTION"
       }).then(response => {
         console.log(response, response.data, response.data.text)
