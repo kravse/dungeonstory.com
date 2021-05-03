@@ -9,7 +9,7 @@
     </div>
     <form>
       <textarea ref="text" v-model="input" type="text"/>
-      <button @click.prevent="submit()" submit="button">Next</button>
+      <button @click.prevent="submit()" submit="button">Write!</button>
     </form>
   </div>
 </template>
