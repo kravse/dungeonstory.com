@@ -1,5 +1,5 @@
 # Dungeon Writer
-[website](https://dungeonwriter.com)
+[website](https://dungeonstory.com)
 
 This is a reverse choose-your-own-adventure style website. The website provides the prompts, you give it options, and it writes you a story.
 
