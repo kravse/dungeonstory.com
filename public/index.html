@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- meta tags -->
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="author" content="">
+    <meta name="keywords" content="example, example2"> -->
+    <!-- Twitter cards -->
+    <!-- <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:image" content="https://YOURSITE.com/share-img.png">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:creator" content="@kravse"> -->
+
+    <!-- Open Graph data / FB -->
+    <!-- <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="https://YOURSITE.com/share-img.png" />
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:description" content="" />
+    <meta property="og:site_name" content="" /> -->
+
+    <!-- <link rel="canonical" href="" /> -->
+    <!-- <link rel="icon" type="image/png" href="./favicon.png" width=32px> -->
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <noscript>
+      <div class="noscript-msg">
+        <p>Concerned about privacy? Check out <a href="https://privacybadger.org/">Privacy Badger</a>, <a href="https://ublockorigin.com/">uBlock Origin</a> and supporting <a href="https://www.eff.org/">Eff.org</a></a>.</p>
+      </div>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <!-- <script src="./outside-vue.js"></script> -->
+    <script>
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.className = 'dark'
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "vuejs-netlify-boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Jared Krause",
+  "license": "MIT",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "core-js": "^3.6.5",
+    "js-type-text": "^2.0.6",
+    "three-js": "^79.0.0",
+    "vue": "^2.6.11",
+    "vue-gtm": "^3.1.0",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.x.x-vue2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "prerender-spa-plugin": "^3.4.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}

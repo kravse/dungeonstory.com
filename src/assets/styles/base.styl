@@ -1,0 +1,93 @@
+body
+  color: $font-color
+  font-family: $base-font
+  background: $bg-color
+  font-weight: 400
+  font-size: 18px
+  display: flex
+  justify-content: center
+  text-align: center
+  -webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale
+
+  *
+    box-sizing: border-box
+
+  // noscript
+  //   display: block
+  //   width: 100%
+
+  +media('md')
+    font-size: 15px
+
+  +media('xs')
+    font-size: 13px
+
+  strong
+    color: darken($font-color, 10%)
+    font-weight: 600
+
+  .code
+    font-family: $title-font
+    color $font-color
+    font-weight: 600
+
+  h1, h2, h3, h4, h5, h6, .title
+    font-family: $title-font
+    color: $accent
+    margin-top: 0
+
+    &.standard-color
+      color: $font-color
+
+  .uppercase
+    text-transform: uppercase
+
+  .h0
+    font-size: 4.5em
+
+    +media('md')
+      font-size: 3.5em
+
+    +media('xs')
+      font-size: 3em
+
+  // edit these as needed
+  h1, .h1
+    font-size: 2em
+    margin: 0 0 0.5em
+
+  h2, .h2
+    font-size: 1.4em
+    margin: 0 0 0.2em
+
+  h3, .h3
+    font-size: 1.32em
+    margin: 0 0 0.15em
+
+  h4, .h4
+    font-size: 1.25em
+    margin: 0 0 0.1em
+
+  h5, .h5
+    font-size: 1.15em
+    margin: 0 0 0.8em
+
+  p
+    font-size: 1em
+    margin-bottom: 0.75em
+    line-height: 1.3em
+
+  a
+    color: $accent
+
+    &:hover
+      color: $alt-accent
+
+  section
+    max-width: $mid-width
+    width: 100%
+    padding: 35px 0
+
+  #app, .app-inner
+    width: 100%
