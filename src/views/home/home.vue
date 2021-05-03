@@ -4,16 +4,16 @@
       <h1>Adventure Writer</h1>
       <h4>Are choose your own adventures too hard for you? Let Adventure Writer make the choices for you!</h4>
       <p class="prompt">
-        {{story}}
+        {{story}}<span v-if="updated">{{updated}}</span><span class="typing" v-if="!typing">...</span>
       </p>
       <p class="instructions">
         <span v-if="loading" class="loading">|</span>
-        <span v-else :style="{'opacity': instructions ? '1': '0'}">Enter some line-separated options to complete this prompt (min 3):</span>
+        <span v-else>Provide 3 options to continue this story (one per line):</span>
       </p>
     </div>
     <form>
       <textarea ref="text" v-model="input" type="text"/>
-      <button @click.prevent="submit()" submit="button">Write!</button>
+      <button :disabled="loading || prevent" @click.prevent="submit()" submit="button">Write!</button>
     </form>
   </div>
 </template>
@@ -29,22 +29,28 @@ export default Vue.extend({
     return {
       input: '',
       story: '',
-      instructions: true,
+      updated: '',
       prompt: '',
       generatedOnce: false,
-      loading: false
+      loading: false,
+      typing: false
     }
   },
   created: async function () {
     this.prompt = prompts[Math.floor(Math.random() * prompts.length)]
-    this.typeText('story', this.prompt, '')
+    this.typeText(this.prompt, '')
     setTimeout(() => {
       this.$refs.text.focus()
     }, 50)
   },
+  computed: {
+    prevent: function () {
+      return this.input.split(/\r\n|\r|\n/).length < 3
+    }
+  },
   methods: {
-    typeText: function (updateValue, prompt, seed) {
-      if (seed) seed+= ' '
+    typeText: function (prompt, seed) {
+      this.typing = true
       jsTypeText.start({
         text: prompt,
         speed: 45,
@@ -52,11 +58,16 @@ export default Vue.extend({
         cursorSpeed: 350,
         cursorStyle: "vertical"
       }, (result) => {
-        this[updateValue] = seed + result
+        this.updated = result
+        if (result === prompt) {
+          this.story = `${seed} ${prompt}`
+          this.updated = ''
+          this.typing = false
+          jsTypeText.stop()
+        }
       });
     },
     writeMore: function (seed) {
-      this.loading = true
       this.$http.post('/.netlify/functions/generate',{
         "prompt": seed,
         "max_tokens": 40,
@@ -64,16 +75,14 @@ export default Vue.extend({
         "k": 5,
         "p": 1
       }).then(response => {
-        this.loading = false
-        this.typeText('story', response.data.text, this.story)
+        this.typeText(response.data.text, this.story)
         this.input = ''
-        this.instructions = true
-        this.$refs.input.focus()
         this.$refs.text.focus()
+        this.loading = false
       })
     },
     submit: function () {
-      this.instructions = false
+      this.loading = true
       let text = this.input.split('\n')
       let prompt = this.prompt
       if (this.prompt.indexOf('.')) {
@@ -86,7 +95,7 @@ export default Vue.extend({
       }).then(response => {
         let results = response.data.likelihoods
         let winner = text[results.indexOf(Math.max(...results))]
-        this.typeText('story', winner, this.story)
+        this.typeText(winner, this.story)
         this.writeMore(`${this.prompt} ${winner}`)
       })
     }

@@ -8,13 +8,19 @@
   to
     transform:rotate(360deg)
 
+@keyframes blink
+  from
+    opacity: 1
+  to
+    opacity: 0
+
 .home
   display: flex
   flex-direction: column
   height: 100vh
 
 h1
-  font-size: 24px
+  font-size: 36px
   margin: 0
   text-align: center
 
@@ -31,9 +37,16 @@ h4
   .prompt
     font-style: italic;
     font-size: 22px
+    font-weight: 800
 
-    span.long-story
-      text-transform: capitalize
+    span
+      color: pink
+
+    .typing
+      animation-name: blink;
+      animation-duration: 750ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
   p
     text-align: left
     color: white
@@ -65,7 +78,7 @@ form
     height: 90%
     background: #000
     color: green
-    border: 1px solid white
+    border: 1px solid blue
     padding: 10px
     font-size: 45px
     font-weight: 800
@@ -82,5 +95,15 @@ form
     font-weight: bold
     max-width: 1200px
     margin: 0 auto 20px
+
+    &:active
+      color: red
+
+    &:disabled
+      background: grey
+      cursor: not-allowed
+
+      &:active
+        color: white
 
 dump_media_cache()
