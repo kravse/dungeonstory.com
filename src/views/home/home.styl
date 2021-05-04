@@ -19,6 +19,7 @@
   flex-direction: column
   height: 100vh
   padding: 5px 10px
+  font-weight: 800
 
 h1
   font-size: 46px
@@ -37,7 +38,6 @@ h4
   .prompt
     font-style: italic;
     font-size: 22px
-    font-weight: 800
 
     +media('xs')
       font-size: 16px
@@ -60,11 +60,16 @@ h4
     color: orange
     margin-bottom: 0
     text-align: left
-    font-weight: 800
+
+  p.error
+    margin-bottom: 0
+    background: #ea1010
+    color: white
+    border: 1px solid white
+    padding: 5px 10px
 
 .loading
   font-size: 35px
-  font-weight: 800
   display: inline-block
   animation-name: spin;
   animation-duration: 500ms;
@@ -85,9 +90,9 @@ form
     border: 1px solid blue
     padding: 10px
     font-size: 45px
-    font-weight: 800
     max-width: 1200px
     margin: 0 auto 20px
+    font-weight: 800
 
     +media('xs')
       font-size: 25px
@@ -99,9 +104,9 @@ form
     border: 0
     color: white
     font-size: 22px
-    font-weight: bold
     max-width: 1200px
     margin: 0 auto 20px
+    font-weight: 800
 
     &:active
       background: violet
@@ -116,7 +121,6 @@ form
 .creds
   p
     color: orange
-    font-weight: 800
 
 
 dump_media_cache()
