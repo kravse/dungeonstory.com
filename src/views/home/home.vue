@@ -7,13 +7,17 @@
         {{story}}<span v-if="updated">{{updated}}</span><span class="typing" v-if="!typing">...</span>
       </p>
       <p class="instructions">
-        <span v-if="loading" class="loading">|</span>
+        <span v-if="loading || typing" class="loading">|</span>
         <span v-else>Provide 3 options to continue this story (one per line):</span>
       </p>
     </div>
     <form>
       <textarea ref="text" v-model="input" type="text"/>
-      <button :disabled="loading || prevent" @click.prevent="submit()" submit="button">Write!</button>
+      <button :disabled="loading || prevent" @click.prevent="submit()" submit="button">
+        <span v-if="loading">Hang on...</span>
+        <span v-else-if="prevent">Keep typing...</span>
+        <span v-else>Write!</span>
+      </button>
     </form>
     <div class="creds">
       <p>A website by <a href="https://twitter.com/kravse">kravse</a></p>
@@ -48,7 +52,12 @@ export default Vue.extend({
   },
   computed: {
     prevent: function () {
-      return this.input.split(/\r\n|\r|\n/).length < 3
+      let lines = this.input.split(/\r\n|\r|\n/)
+      if (lines.length < 3 || lines[lines.length - 1].length < 3) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -79,7 +88,6 @@ export default Vue.extend({
         "p": 1
       }).then(response => {
         this.typeText(response.data.text, this.story)
-        this.input = ''
         this.$refs.text.focus()
         this.loading = false
       })
@@ -87,12 +95,16 @@ export default Vue.extend({
     submit: function () {
       this.loading = true
       let text = this.input.split('\n')
-      let prompt = this.prompt
-      if (this.prompt.indexOf('.')) {
-        prompt = this.story.slice(this.story.lastIndexOf('.'), this.story.length)
+      let newPrompt = this.prompt
+      if (this.prompt.indexOf('.') && this.prompt.length > 75) {
+        newPrompt = this.story.slice(this.story.lastIndexOf('.'), this.story.length)
+      }
+      if (newPrompt.length > 75) {
+        newPrompt = newPrompt.slice(newPrompt.length - 75, newPrompt.length)
+        newPrompt = newPrompt.slice(newPrompt.indexOf(' '), newPrompt.length)
       }
       this.$http.post('/.netlify/functions/best', {
-        query: prompt,
+        query: newPrompt,
         options: text,
         mode: "APPEND_OPTION"
       }).then(response => {
@@ -100,6 +112,7 @@ export default Vue.extend({
         let winner = text[results.indexOf(Math.max(...results))]
         this.typeText(winner, this.story)
         this.writeMore(`${this.prompt} ${winner}`)
+        this.input = ''
       })
     }
   }
