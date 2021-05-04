@@ -10,6 +10,7 @@
         <span v-if="loading || typing" class="loading">|</span>
         <span v-else>Provide 3 options to continue this story (one per line):</span>
       </p>
+      <p class="error" v-if="error">Ok so. Something went wrong. You could try changing your input and submitting again, or refreshing.<br> {{error}}</p>
     </div>
     <form>
       <textarea ref="text" v-model="input" type="text"/>
@@ -38,6 +39,7 @@ export default Vue.extend({
       story: '',
       updated: '',
       prompt: '',
+      error: '',
       generatedOnce: false,
       loading: false,
       typing: false
@@ -90,10 +92,13 @@ export default Vue.extend({
         this.typeText(response.data.text, this.story)
         this.$refs.text.focus()
         this.loading = false
+      }).catch((error) =>{
+        this.error = `GENERATE ERROR: ${error.response.status}: ${error.message}`
       })
     },
     submit: function () {
       this.loading = true
+      this.error = ''
       let text = this.input.split('\n')
       let newPrompt = this.prompt
       if (this.prompt.indexOf('.') && this.prompt.length > 75) {
@@ -113,6 +118,8 @@ export default Vue.extend({
         this.typeText(winner, this.story)
         this.writeMore(`${this.prompt} ${winner}`)
         this.input = ''
+      }).catch((error) =>{
+        this.error = `CHOOSE-BEST ERROR: ${error.response.status}: ${error.message}`
       })
     }
   }
