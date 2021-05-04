@@ -53,7 +53,7 @@ export default Vue.extend({
   computed: {
     prevent: function () {
       let lines = this.input.split(/\r\n|\r|\n/)
-      if (lines.length < 3 || lines[lines.length - 1].length < 3) {
+      if (lines.length < 3 || lines.length === 3 && lines[lines.length - 1].length < 3) {
         return true
       } else {
         return false
