@@ -2,7 +2,7 @@
   <div class="home">
     <div class="story">
       <h1>Dungeon Story</h1>
-      <h4>Are choose your own adventures too hard for you? Let dungeonstory.com make the choices for you!</h4>
+      <h4>Are choose-your-own-adventures too hard for you? Let dungeonstory.com make the choices for you!</h4>
       <p class="prompt">
         {{story}}<span v-if="updated">{{updated}}</span><span class="typing" v-if="!typing">...</span>
       </p>
