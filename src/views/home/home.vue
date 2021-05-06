@@ -99,7 +99,7 @@ export default Vue.extend({
     submit: function () {
       this.loading = true
       this.error = ''
-      let text = this.input.split('\n')
+      let text = this.input.split('\n').map(val => val.trim())
       let newPrompt = this.prompt
       if (this.prompt.indexOf('.') && this.prompt.length > 75) {
         newPrompt = this.story.slice(this.story.lastIndexOf('.'), this.story.length)
