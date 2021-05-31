@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "cohere-ai": "^1.0.4",
     "core-js": "^3.6.5",
     "js-type-text": "^2.0.6",
     "three-js": "^79.0.0",

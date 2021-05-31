@@ -81,22 +81,23 @@ export default Vue.extend({
         }
       });
     },
-    writeMore: function (seed) {
-      this.$http.post('/.netlify/functions/generate',{
-        "prompt": seed,
-        "max_tokens": 40,
-        "temperature": 1,
-        "k": 5,
-        "p": 1
-      }).then(response => {
+    writeMore: async function (seed) {
+      try {
+        const response = this.$http.post('/.netlify/functions/generate',{
+          "prompt": seed,
+          "max_tokens": 40,
+          "temperature": 1,
+          "k": 5,
+          "p": 1
+        })
         this.typeText(response.data.text, this.story)
         this.$refs.text.focus()
         this.loading = false
-      }).catch((error) =>{
-        this.error = `GENERATE ERROR: ${error.response.status}: ${error.message}`
-      })
+      } catch(error) {
+        this.error = `GENERATE ERROR: ${error.response.status}:  ${error.response.data.message}`
+      }
     },
-    submit: function () {
+    submit: async function () {
       this.loading = true
       this.error = ''
       let text = this.input.split('\n').map(val => val.trim())
@@ -108,19 +109,20 @@ export default Vue.extend({
         newPrompt = newPrompt.slice(newPrompt.length - 75, newPrompt.length)
         newPrompt = newPrompt.slice(newPrompt.indexOf(' '), newPrompt.length)
       }
-      this.$http.post('/.netlify/functions/best', {
-        query: newPrompt,
-        options: text,
-        mode: "APPEND_OPTION"
-      }).then(response => {
+      try {
+        const response = await this.$http.post('/.netlify/functions/best', {
+          query: newPrompt,
+          options: text,
+          mode: "APPEND_OPTION"
+        });
         let results = response.data.likelihoods
         let winner = text[results.indexOf(Math.max(...results))]
         this.typeText(winner, this.story)
         this.writeMore(`${this.prompt} ${winner}`)
         this.input = ''
-      }).catch((error) =>{
-        this.error = `CHOOSE-BEST ERROR: ${error.response.status}: ${error.message}`
-      })
+      } catch (error) {
+        this.error = `CHOOSE-BEST ERROR: ${error.response.status}: ${error.response.data.message}`
+      }
     }
   }
 });
